@@ -53,50 +53,50 @@ from .forms import UserRegistration
 
 
 
-# class HomeView(View):
-#
-#     def get(self, request):
-#         template = 'townhall/home.html'
-#         context = {'user': request.user}
-#         return render(request, template, context)
-
-
 class HomeView(View):
 
     def get(self, request):
-        #gets all the posts
         template = 'townhall/home.html'
-        current_user = request.user
-        user_interests = current_user.interests
-        user_categories = {} # dictionary of user interest related categories
-        for interest in user_interests:
-            current_categories = interest.category_set.all()
-            for category in current_categories:
-                user_categories[category.id] = True
-        paginate_count = 5
-
-        user_posts = UserPost.objects.all().order_by('added_on')
-        # looks at first 5, then filters on that
-        filter_five_posts = []
-        count = 1
-        last_flipped_index = 0
-        feed_posts = []
-        for current_post in user_posts:
-            post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
-                    'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
-                    'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': ''}
-            feed_posts.append(post)
-
-        context = {'posts': feed_posts}
-
-
-            # for post_category in current_post.categories:
-            #     if user_categories.get(post_category.id, False):
-            #         if (coun)
-            #         print
-            #         count += 1
-            #         continue
+        context = {'user': request.user}
         return render(request, template, context)
+
+
+# class HomeView(View):
+#
+#     def get(self, request):
+#         #gets all the posts
+#         template = 'townhall/home.html'
+#         current_user = request.user
+#         user_interests = current_user.interests
+#         user_categories = {} # dictionary of user interest related categories
+#         for interest in user_interests:
+#             current_categories = interest.category_set.all()
+#             for category in current_categories:
+#                 user_categories[category.id] = True
+#         paginate_count = 5
+#
+#         user_posts = UserPost.objects.all().order_by('added_on')
+#         # looks at first 5, then filters on that
+#         filter_five_posts = []
+#         count = 1
+#         last_flipped_index = 0
+#         feed_posts = []
+#         for current_post in user_posts:
+#             post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
+#                     'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
+#                     'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': ''}
+#             feed_posts.append(post)
+#
+#         context = {'posts': feed_posts}
+#
+#
+#             # for post_category in current_post.categories:
+#             #     if user_categories.get(post_category.id, False):
+#             #         if (coun)
+#             #         print
+#             #         count += 1
+#             #         continue
+#         return render(request, template, context)
 
 
 class UserRegistrationView(View):
