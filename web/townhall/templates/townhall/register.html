@@ -8,6 +8,10 @@
 
 <form action="" method="POST">
     {% csrf_token %}
+    <label for="first_name">First Name:</label>
+    <input type="text" name="first_name" value="" id="first_name" />
+    <label for="last_name">Last Name:</label>
+    <input type="text" name="last_name" value="" id="last_name" />
     <label for="email">Email:</label>
     <input type="text" name="email" value="" id="email" />
     <label for="password">Password:</label>
