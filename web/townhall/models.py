@@ -12,6 +12,15 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 
+# The user will have interests
+class Interest(models.Model):
+    name = models.CharField(max_length=50)
+    added_on = models.DateField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=False)
+
+    ALREADY_EXISTS = 'The Interest already exists'
+
 # *************USER AND PERMISSION MODELS*********************
 class Permission(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -156,8 +165,28 @@ class AppUser(AbstractBaseUser):
 # FOR NOW
 
 # *************USER IDEAS********************
+class Category(models.Model):
+    related_interests = models.ManyToManyField(
+        Interest,
+        related_name='category_interests',
+        blank=True)
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+    # image = models.ImageField(upload_to='products/category_images', storage=OverwriteStorage(), blank=True)
+    added_on = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=False)
 
-class UserPosts(models.Model):
+    ALREADY_EXISTS = 'The category already exists'
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'categories'
+
+
+class UserPost(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_post', on_delete=models.CASCADE,)
     title = models.CharField(max_length=255)
     #Need to figure out the image logic
@@ -193,40 +222,7 @@ class UserPosts(models.Model):
         return self.liked - self.disliked
 
     class Meta:
-        verbose_name = 'User Posts'
-
-    #need category field that this will have a many to many relationship with
-
-
-class Category(models.Model):
-    related_interests = models.ManyToManyField(
-        Interest,
-        related_name='category_interests',
-        blank=True)
-    name = models.CharField(max_length=50)
-    description = models.TextField(blank=True)
-    # image = models.ImageField(upload_to='products/category_images', storage=OverwriteStorage(), blank=True)
-    added_on = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-    is_visible = models.BooleanField(default=False)
-
-    ALREADY_EXISTS = 'The category already exists'
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'categories'
-
-
-# The user will have interests
-class Interest(models.Model):
-    name = models.CharField(max_length=50)
-    added_on = models.DateField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-    is_visible = models.BooleanField(default=False)
-
-    ALREADY_EXISTS = 'The Interest already exists'
+        verbose_name = 'User Post'
 
 
 # useful if we want to write comments outside of posts
@@ -240,7 +236,7 @@ class Interest(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_comment', on_delete=models.CASCADE)
-    post = models.ForeignKey(UserPosts, related_name='post_comment', on_delete=models.CASCADE)
+    post = models.ForeignKey(UserPost, related_name='post_comment', on_delete=models.CASCADE)
     content = models.TextField()
     added_on = models.DateTimeField(auto_now_add=True)
 
