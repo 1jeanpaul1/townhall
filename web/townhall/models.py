@@ -68,7 +68,7 @@ class AppUserManager(BaseUserManager):
         birth and password.
         """
         user = self.create_user(email, password=password, first_name=first_name, last_name=last_name)
-        user.is_admin = True
+        user.is_staff = True
         user.save(using=self._db)
         return user
 
@@ -112,8 +112,9 @@ class AppUser(AbstractBaseUser):
         blank=True)
     is_active = models.BooleanField(
         default=True)
-    is_admin = models.BooleanField(
-        default=False)
+    is_staff = models.BooleanField(default=False)
+    # is_admin = models.BooleanField(
+    #     default=False)
     is_verified = models.BooleanField(
         default=False)
     added_on = models.DateTimeField(
@@ -187,7 +188,7 @@ class Category(models.Model):
 
 
 class UserPost(models.Model):
-    user = models.ForeignKey(AppUser, related_name='user_post', on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_post', on_delete=models.CASCADE,)
     title = models.CharField(max_length=255)
     #Need to figure out the image logic
     # post_image1 = models.ImageField(upload_to='posts/images', blank=True)

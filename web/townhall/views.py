@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponse
+from django.template.context_processors import csrf
+# from django.core.context_processors
 from django.views.generic import View
 from django.http import Http404
 from django.shortcuts import render
@@ -12,25 +14,38 @@ from django.shortcuts import render
 # Create your views here.
 
 
-def index(request):
-    return HttpResponse("TOWN HALL START")
+# def index(request):
+#     return HttpResponse("TOWN HALL START")
+#
+# def detail(request, question_id):
+#     return HttpResponse("You're looking at FREAKING TOWN HALL %s." % question_id)
+#
+# def results(request, question_id):
+#     response = "You're looking at the results of question %s."
+#     return HttpResponse(response % question_id)
+#
+# def vote(request, question_id):
+#     return HttpResponse("You're voting on question %s." % question_id)
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at FREAKING TOWN HALL %s." % question_id)
+def login(request):
+    c = {}
+    c.update(csrf(request))
+    return render(request, 'townhall/login.html', c)
 
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+# def auth_view(request):
+#     username = request.POST.get('username', '')
+#     password = request.POST.get('password', '')
+#     user = auth.authenticate(username=username, password=password)
+#
+#     if user is not None:
 
-def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
 
 
 class HomeView(View):
 
     def get(self, request):
         template = 'townhall/home.html'
-        context = {}
+        context = {'user': request.user}
         return render(request, template, context)
 
 
