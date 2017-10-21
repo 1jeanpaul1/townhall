@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib import auth
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template.context_processors import csrf
 # from django.core.context_processors
 from django.views.generic import View
@@ -9,7 +11,12 @@ from django.http import Http404
 from django.shortcuts import render
 from models import UserPost, Comment
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+# from django.views.generic import View
+from .forms import UserRegistration
+
+# from django.contrib import auth
 
 # Create your views here.
 
@@ -27,17 +34,22 @@ from django.shortcuts import render
 # def vote(request, question_id):
 #     return HttpResponse("You're voting on question %s." % question_id)
 
-def login(request):
-    c = {}
-    c.update(csrf(request))
-    return render(request, 'townhall/login.html', c)
-
+# def login(request):
+#     c = {}
+#     c.update(csrf(request))
+#     return render(request, 'townhall/login.html', c)
+#
+#
 # def auth_view(request):
 #     username = request.POST.get('username', '')
 #     password = request.POST.get('password', '')
 #     user = auth.authenticate(username=username, password=password)
 #
 #     if user is not None:
+#         auth.login(request, user)
+#         return HttpResponseRedirect('../../townhall/home/')
+#     else:
+#         return HttpResponseRedirect('../../townhall/login/')
 
 
 
@@ -62,6 +74,44 @@ class FeedView(View):
 
 
 
+class UserRegistrationView(View):
+    form_class = UserRegistration
+    template_name = 'townhall/register.html'
+
+    # displays a blank form
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    # process user registration
+    def post(self, request):
+        print(request.POST)
+        form = self.form_class(request.POST)
+        # print(form.is_valid())
+        # print(form.data)
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            # cleanred (normalized data)
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            user = authenticate(username=email, password=password)
+
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('../home')
+
+        return render(request, self.template_name, {'form': form})
+
+class LogoutView(View):
+    logout = '/'
+
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(self.logout)
 
 
 
