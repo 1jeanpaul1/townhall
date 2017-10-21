@@ -110,8 +110,9 @@ class LogoutView(View):
     logout = '/'
 
     def get(self, request):
+        print(request)
         logout(request)
-        return HttpResponseRedirect(self.logout)
+        return redirect('login')
 
 
 
