@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.http import HttpResponse, HttpRequest
 from django.contrib import auth
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -14,11 +15,11 @@ from models import UserPost, Comment
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 # from django.views.generic import View
-from .forms import UserRegistration
+from .forms import UserRegistration, UserFormPost
 
 # from django.contrib import auth
 
-from models import AppUser, UserPost
+from models import AppUser, UserPost, Category
 
 # Create your views here.
 
@@ -65,38 +66,69 @@ from models import AppUser, UserPost
 class ProfileView(View):
 
     def get(self, request):
-        currentuser = AppUser.objects.get(email=request.user)
-        if (currentuser.is_entrepreneur):
+        cururl = request.path
+        currentprofile = AppUser.objects.get(email=HttpRequest.path[17:])
+        if (currentprofile.is_entrepreneur):
             template = 'entrepreneurprofile.html'
             context = {}
-            context['username']= currentuser.get_full_name()
-            context['numideas']= UserPost.objects.filter(currentuser).filter(is_idea=True).count()
-            context['numventures'] = UserPost.objects.filter(currentuser).filter(is_idea=False).count()
-            context['location'] = currentuser.city + ", " + currentuser.country
-            context['bio'] = currentuser.bio
-            context['email'] = currentuser.email
-            context['phonenumber'] = currentuser.phone_number
-            context['website'] = currentuser.website
-            context['interests'] = currentuser.interests
-            context['photo'] = currentuser.profile_image
+            context['username']= currentprofile.get_full_name()
+            context['numideas']= UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
+            context['numventures'] = UserPost.objects.filter(currentprofile).filter(is_idea=False).count()
+            context['location'] = currentprofile.city + ", " + currentprofile.country
+            context['bio'] = currentprofile.bio
+            context['email'] = currentprofile.email
+            context['phonenumber'] = currentprofile.phone_number
+            context['website'] = currentprofile.website
+            context['interests'] = currentprofile.interests
+            context['photo'] = currentprofile.profile_image
             return render(request, template, context)
         elif():
             template = 'citizenprofile'
             context = {}
-            context['username'] = currentuser.get_full_name()
-            context['numideas'] = UserPost.objects.filter(currentuser).filter(is_idea=True).count()
-            context['location'] = currentuser.city + ", " + currentuser.country
-            context['bio'] = currentuser.bio
-            context['email'] = currentuser.email
-            context['phonenumber'] = currentuser.phone_number
-            context['photo'] = currentuser.profile_image
+            context['username'] = currentprofile.get_full_name()
+            context['numideas'] = UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
+            context['location'] = currentprofile.city + ", " + currentprofile.country
+            context['bio'] = currentprofile.bio
+            context['email'] = currentprofile.email
+            context['phonenumber'] = currentprofile.phone_number
+            context['photo'] = currentprofile.profile_image
             return render(request, template, context)
 
 class HomeView(View):
 
     def get(self, request):
         template = 'townhall/home.html'
+        current_user = request.user
+        user_interests = current_user.interests
+        user_categories = {} # dictionary of user interest related categories
+ #       for interest in user_interests:
+ #            current_categories = interest.category_set.all()
+ #            for category in current_categories:
+ #                user_categories[category.id] = True
+ #        paginate_count = 5
+ #
+ #        user_posts = UserPost.objects.all().order_by('added_on')
+ #        looks at first 5, then filters on that
+        # filter_five_posts = []
+        # count = 1
+        # last_flipped_index = 0
+        # feed_posts = []
+        # for current_post in user_posts:
+        #     post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
+        #             'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
+                    # 'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': ''}
+            # feed_posts.append(post)
+
+   #     context = {'posts': feed_posts}
         context = {'user': request.user}
+
+            # for post_category in current_post.categories:
+            #     if user_categories.get(post_category.id, False):
+            #         if (coun)
+            #         print
+            #         count += 1
+            #         continue
+
         return render(request, template, context)
 
 
@@ -178,6 +210,44 @@ class LogoutView(View):
         logout(request)
         return redirect('login')
 
+class UserFormPostView(View):
+    form_class = UserFormPost
+    template_name = 'townhall/newpost.html'
 
+    # blank form
+    def get(self, request):
+        form = self.form_class(None)
+        context = {}
+        context['categories'] = Category.objects.all()
+
+        return render(request, self.template_name, {'form': form})
+
+        # process user registration
+
+    def post(self, request):
+        print(request.POST)
+        form = self.form_class(request.POST)
+        # print(form.is_valid())
+        # print(form.data)
+        if form.is_valid():
+            user = request.user
+            post = form.save(commit=False)
+            id = post.object.id
+
+            # cleanred (normalized data)
+            title = form.cleaned_data['title']
+            summary = form.cleaned_data['summary']
+            description = form.cleaned_data['description']
+            is_idea = form.cleaned_data['is_idea']
+            categories = form.cleaned_data['categories']
+
+            post.save()
+
+
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('../home')
+
+        return render(request, self.template_name, {'form': form})
 
 

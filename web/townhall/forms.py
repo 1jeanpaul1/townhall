@@ -13,7 +13,7 @@
 #         fields = {"email", }
 
 # from django.contrib.auth.models import User
-from models import AppUser
+from models import AppUser, UserPost
 from django import forms
 
 
@@ -25,3 +25,8 @@ class UserRegistration(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'password']
 
     # print()
+
+class UserFormPost(forms.ModelForm):
+    class Meta:
+        model = UserPost
+        fields = ['user', 'title', 'summary', 'description', 'is_idea', 'categories']

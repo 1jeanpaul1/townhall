@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 
 
 # The user will have interests
@@ -216,8 +217,8 @@ class UserPost(models.Model):
         blank=True)
     added_on = models.DateTimeField(
         auto_now_add=True)
-    liked = models.IntegerField()
-    disliked = models.IntegerField()
+    liked = models.IntegerField(default=0)
+    disliked = models.IntegerField(default=0)
     is_idea = models.BooleanField()
     # could go in either Category or Product class
     categories = models.ManyToManyField(
