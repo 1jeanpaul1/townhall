@@ -4,19 +4,13 @@ from . import views
 from views import HomeView, UserRegistrationView, LogoutView
 from django.contrib.auth.views import login, login_required
 
+def check_login(view_function):
+    return login_required(view_function.as_view(), redirect_field_name="", login_url='/login/')
+
+login_url = '/townhall/login/'
 urlpatterns = [
-    # url(r'^$', views.index, name='index'),
-    # url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
-    # # ex: /polls/5/results/
-    # url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
-    # # ex: /polls/5/vote/
-    # url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
-    url(r'^home/$', HomeView.as_view(), name='home'),
-    url(r'^profile/$', views.ProfileView, name='profile'),
-    url(r'^login/$', login, {'template_name': 'townhall/login.html'}),
-    # url(r'^login/$', views.login, name='login'),
-# auth_view
-#     url(r'^auth_view/$', views.auth_view, name='auth_view'),
+    url(r'^home/$', login_required(HomeView.as_view()), name='home'),
+    url(r'^login/$', login, {'template_name': 'townhall/login.html'}, name='login'),
     url(r'^register/$', UserRegistrationView.as_view(), name='register'),
-    url(r'^logout/$', LogoutView.as_view(), name='logout')
+    url(r'^logout/$', login_required(LogoutView.as_view()), name='logout')
 ]

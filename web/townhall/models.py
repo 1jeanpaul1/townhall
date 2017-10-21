@@ -10,6 +10,7 @@ from django.contrib.auth.models import (
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 
 
 # The user will have interests
@@ -246,6 +247,9 @@ class UserPost(models.Model):
 
     class Meta:
         verbose_name = 'User Post'
+
+    def get_absolute_url(self):
+        return reverse()
 
 
 # useful if we want to write comments outside of posts
