@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from django.conf.global_settings import LOGIN_REDIRECT_URL
+from django.conf.global_settings import LOGIN_REDIRECT_URL, LOGIN_URL
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'townhall.AppUser'
 
-AUTHENTICATION_BACKENDS = {'townhall.authentication_views.CustomerUserAuth'}
+# AUTHENTICATION_BACKENDS = {'townhall.authentication_views.CustomUserAuth'}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,6 +125,8 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/townhall/home/'
+
+LOGIN_URL = '/townhall/login/'
 
 
 # Static files (CSS, JavaScript, Images)
