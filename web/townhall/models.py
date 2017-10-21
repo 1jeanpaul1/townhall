@@ -171,7 +171,7 @@ class Category(models.Model):
         related_name='category_interests',
         blank=True)
     name = models.CharField(max_length=50)
-    description = models.TextField(blank=True)
+    # description = models.TextField(blank=True)
     # image = models.ImageField(upload_to='products/category_images', storage=OverwriteStorage(), blank=True)
     added_on = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
