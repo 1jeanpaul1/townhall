@@ -217,8 +217,8 @@ class UserPost(models.Model):
         blank=True)
     added_on = models.DateTimeField(
         auto_now_add=True)
-    liked = models.IntegerField()
-    disliked = models.IntegerField()
+    liked = models.IntegerField(default=0)
+    disliked = models.IntegerField(default=0)
     is_idea = models.BooleanField()
     # could go in either Category or Product class
     categories = models.ManyToManyField(
@@ -247,9 +247,6 @@ class UserPost(models.Model):
 
     class Meta:
         verbose_name = 'User Post'
-
-    def get_absolute_url(self):
-        return reverse()
 
 
 # useful if we want to write comments outside of posts

@@ -15,11 +15,11 @@ from models import UserPost, Comment
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 # from django.views.generic import View
-from .forms import UserRegistration
+from .forms import UserRegistration, UserFormPost
 
 # from django.contrib import auth
 
-from models import AppUser, UserPost
+from models import AppUser, UserPost, Category
 
 # Create your views here.
 
@@ -147,6 +147,44 @@ class LogoutView(View):
         logout(request)
         return redirect('login')
 
+class UserFormPostView(View):
+    form_class = UserFormPost
+    template_name = 'townhall/newpost.html'
 
+    # blank form
+    def get(self, request):
+        form = self.form_class(None)
+        context = {}
+        context['categories'] = Category.objects.all()
+
+        return render(request, self.template_name, {'form': form})
+
+        # process user registration
+
+    def post(self, request):
+        print(request.POST)
+        form = self.form_class(request.POST)
+        # print(form.is_valid())
+        # print(form.data)
+        if form.is_valid():
+            user = request.user
+            post = form.save(commit=False)
+            id = post.object.id
+
+            # cleanred (normalized data)
+            title = form.cleaned_data['title']
+            summary = form.cleaned_data['summary']
+            description = form.cleaned_data['description']
+            is_idea = form.cleaned_data['is_idea']
+            categories = form.cleaned_data['categories']
+
+            post.save()
+
+
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('../home')
+
+        return render(request, self.template_name, {'form': form})
 
 
