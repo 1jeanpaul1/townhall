@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.http import HttpResponse, HttpRequest
 from django.contrib import auth
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -65,31 +66,32 @@ class HomeView(View):
 class ProfileView(View):
 
     def get(self, request):
-        currentuser = AppUser.objects.get(email=request.user)
-        if (currentuser.is_entrepreneur):
+        cururl = request.path
+        currentprofile = AppUser.objects.get(email=HttpRequest.path[17:])
+        if (currentprofile.is_entrepreneur):
             template = 'entrepreneurprofile.html'
             context = {}
-            context['username']= currentuser.get_full_name()
-            context['numideas']= UserPost.objects.filter(currentuser).filter(is_idea=True).count()
-            context['numventures'] = UserPost.objects.filter(currentuser).filter(is_idea=False).count()
-            context['location'] = currentuser.city + ", " + currentuser.country
-            context['bio'] = currentuser.bio
-            context['email'] = currentuser.email
-            context['phonenumber'] = currentuser.phone_number
-            context['website'] = currentuser.website
-            context['interests'] = currentuser.interests
-            context['photo'] = currentuser.profile_image
+            context['username']= currentprofile.get_full_name()
+            context['numideas']= UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
+            context['numventures'] = UserPost.objects.filter(currentprofile).filter(is_idea=False).count()
+            context['location'] = currentprofile.city + ", " + currentprofile.country
+            context['bio'] = currentprofile.bio
+            context['email'] = currentprofile.email
+            context['phonenumber'] = currentprofile.phone_number
+            context['website'] = currentprofile.website
+            context['interests'] = currentprofile.interests
+            context['photo'] = currentprofile.profile_image
             return render(request, template, context)
         elif():
             template = 'citizenprofile'
             context = {}
-            context['username'] = currentuser.get_full_name()
-            context['numideas'] = UserPost.objects.filter(currentuser).filter(is_idea=True).count()
-            context['location'] = currentuser.city + ", " + currentuser.country
-            context['bio'] = currentuser.bio
-            context['email'] = currentuser.email
-            context['phonenumber'] = currentuser.phone_number
-            context['photo'] = currentuser.profile_image
+            context['username'] = currentprofile.get_full_name()
+            context['numideas'] = UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
+            context['location'] = currentprofile.city + ", " + currentprofile.country
+            context['bio'] = currentprofile.bio
+            context['email'] = currentprofile.email
+            context['phonenumber'] = currentprofile.phone_number
+            context['photo'] = currentprofile.profile_image
             return render(request, template, context)
 
 class FeedView(View):

@@ -76,6 +76,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web.wsgi.application'
 
+# Place to store files
+
+MEDIA_ROOT = 'C:\Users\shepp\OneDrive\Documents\GitHub\\townhall\\web\\townhall\\files'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -84,8 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'townhalldb',
-        'USER': 'jtorre',
-        'PASSWORD': 'temp',
+        'USER': 'postgres',
+        'PASSWORD': 'Lilyluv2',
         'HOST': 'localhost',
         'PORT': '5432',
     }

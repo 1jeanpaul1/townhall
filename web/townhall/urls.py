@@ -12,6 +12,7 @@ urlpatterns = [
     # # ex: /polls/5/vote/
     # url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
     url(r'^home/$', HomeView.as_view(), name='home'),
+    url(r'^profile/$', views.ProfileView, name='profile'),
     url(r'^login/$', login, {'template_name': 'townhall/login.html'}),
     # url(r'^login/$', views.login, name='login'),
 # auth_view
