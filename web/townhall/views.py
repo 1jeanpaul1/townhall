@@ -11,6 +11,8 @@ from models import UserPost, Comment
 
 from django.shortcuts import render
 
+from models import AppUser, UserPost
+
 # Create your views here.
 
 
@@ -48,6 +50,35 @@ class HomeView(View):
         context = {'user': request.user}
         return render(request, template, context)
 
+class ProfileView(View):
+
+    def get(self, request):
+        currentuser = AppUser.objects.get(email=request.user)
+        if (currentuser.is_entrepreneur):
+            template = 'entrepreneurprofile.html'
+            context = {}
+            context['username']= currentuser.get_full_name()
+            context['numideas']= UserPost.objects.filter(currentuser).filter(is_idea=True).count()
+            context['numventures'] = UserPost.objects.filter(currentuser).filter(is_idea=False).count()
+            context['location'] = currentuser.city + ", " + currentuser.country
+            context['bio'] = currentuser.bio
+            context['email'] = currentuser.email
+            context['phonenumber'] = currentuser.phone_number
+            context['website'] = currentuser.website
+            context['interests'] = currentuser.interests
+            context['photo'] = currentuser.profile_image
+            return render(request, template, context)
+        elif():
+            template = 'citizenprofile'
+            context = {}
+            context['username'] = currentuser.get_full_name()
+            context['numideas'] = UserPost.objects.filter(currentuser).filter(is_idea=True).count()
+            context['location'] = currentuser.city + ", " + currentuser.country
+            context['bio'] = currentuser.bio
+            context['email'] = currentuser.email
+            context['phonenumber'] = currentuser.phone_number
+            context['photo'] = currentuser.profile_image
+            return render(request, template, context)
 
 class FeedView(View):
 
@@ -59,6 +90,7 @@ class FeedView(View):
             post = {'user': post.user.get_full_name(), 'title': post.title, 'reactions': post.aggregate_reactions,
                     'idea_or_venture': post.idea_or_venture, 'comment_count': '', 'venture_count': ''}
             post['comment_count'] = Comment.objects.filter(post=post).count()
+
 
 
 

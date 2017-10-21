@@ -99,13 +99,20 @@ class AppUser(AbstractBaseUser):
     zipcode = models.CharField(
         max_length=255,
         blank=True)
+    bio = models.TextField(
+        blank=True
+    )
+    website = models.CharField(
+        max_length=255,
+        blank = True
+    )
 
     # This is maintained for backward compatibility
     country = models.CharField(
         max_length=255,
         blank=True)
 
-    # profile_image = models.ImageField(upload_to='users/profile_pictures', blank=True)
+    profile_image = models.ImageField(upload_to='profilepics/', blank=True)
     roles = models.ManyToManyField(
         Role,
         related_name='role_appuser',
