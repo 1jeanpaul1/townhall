@@ -22,7 +22,7 @@ class UserRegistration(forms.ModelForm):
 
     class Meta:
         model = AppUser
-        fields = ['email', 'password']
+        fields = ['first_name', 'last_name', 'email', 'password']
 
     # print()
 
