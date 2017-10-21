@@ -219,7 +219,22 @@ class UserPost(models.Model):
 
     @property
     def aggregate_reactions(self):
-        return self.liked - self.disliked
+        aggregate_count = self.liked - self.disliked
+        aggregate_string = str(aggregate_count)
+        result = ''
+        if aggregate_count == 0:
+            return aggregate_string
+        elif aggregate_count > 0:
+            result += '+' + aggregate_string
+        else:
+            result += '-' + aggregate_string
+
+    @property
+    def idea_or_venture(self):
+        if self.is_idea:
+            return 'Idea'
+        else:
+            return 'Venture'
 
     class Meta:
         verbose_name = 'User Post'
