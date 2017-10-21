@@ -1,0 +1,53 @@
+nav {
+    background-color: #74e279;
+    color: #fff;
+}
+
+nav a {
+    color: #fff;
+}
+
+.nav>li>a:focus, .nav>li>a:hover,
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover,
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background-color: #86e38b;
+    color: #fff;
+}
+
+nav .icon-bar {
+    background-color: #fff;
+}
+
+.navbar {
+    border-radius: 0px;
+}
+
+.navbar-brand img {
+    width: 150px;
+    position: relative;
+    bottom: 9px;
+    left: -8px;
+}
+
+@media(max-width: 767px) {
+    #navbarSupportedContent {
+        float: left;
+    }
+
+    #navbarSupportedContent a {
+        color: #fff;
+    }
+    .navbar-collapse.in, .navbar-collapse.collapsing {
+        width: 100%;
+    }
+}
+
+@media(min-width: 768px) {
+    #navbarSupportedContent {
+        float: right;
+    }
+}
+
+.modal-title {
+    float: left;
+}

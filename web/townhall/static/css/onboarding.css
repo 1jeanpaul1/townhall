@@ -1,0 +1,112 @@
+body {
+    background-color: #f2fdf2;
+    color: #74e279;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container-fluid {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+#signIn {
+    float: right;
+}
+
+.navbar-nav {
+    float: right;
+    margin: 0;
+}
+
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.landing-info .subsection {
+    position: relative;
+    bottom: 28px;
+    left: 12px;
+}
+
+.landing-info h3 {
+    font-weight: 300;
+    margin-bottom: 5px;
+}
+
+.registration {
+    margin-top: 15px;
+}
+
+.registration .subsection {
+    background-color: #fff;
+    border-radius: 4px;
+    padding-top: 3px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+@media(max-width: 992px) {
+    .registration {
+        position: relative;
+        left: 12px;
+        margin-top: 0px;
+    }
+}
+
+@media(max-width: 500px) {
+    .landing-info img {
+        width: 100%;
+    }
+    .landing-info h3 {
+        font-size: 20px;
+    }
+    .landing-info .subsection {
+        left: 10px;
+        bottom: 20px;
+    }
+    .container-fluid {
+        padding-right: 30px;
+        padding-left: 20px;
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #74e279;
+    border-color: #63DE69;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:active:focus  {
+    color: #fff;
+    background-color: #3DD645;
+    border-color: #2CCE34;
+}
+
+.btn-primary.register {
+    width: 100%;
+}
+
+.sign-in a {
+    color: #1A7A1F;
+}
+
+.sign-in {
+    padding-top: 10px;
+}
+
+.registration-page {
+    color: #888;
+}
+
+.custom-file {
+    font-weight: normal;
+}
+
+.registration h3 {
+    color: #74e279;
+}
