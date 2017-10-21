@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.views.generic import View
 from django.http import Http404
 from django.shortcuts import render
+from models import UserPost, Comment
 
 from django.shortcuts import render
 
@@ -28,6 +29,24 @@ def vote(request, question_id):
 class HomeView(View):
 
     def get(self, request):
-        template = 'home.html'
+        template = 'townhall/home.html'
         context = {}
         return render(request, template, context)
+
+
+class FeedView(View):
+
+    def get(self, request):
+        #gets all the posts
+        user_posts = UserPost.objects.all()
+
+        for post in user_posts:
+            post = {'user': post.user.get_full_name(), 'title': post.title, 'reactions': post.aggregate_reactions,
+                    'idea_or_venture': post.idea_or_venture, 'comment_count': '', 'venture_count': ''}
+            post['comment_count'] = Comment.objects.filter(post=post).count()
+
+
+
+
+
+
