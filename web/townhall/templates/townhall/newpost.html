@@ -1,24 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'townhall/web_app_master.html' %}
+{% load static from staticfiles %}
+<!--{% load i18n %}-->
+{% block head %}
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <label for="title">Title:</label>
-    <input type="text" name="title" value="" id="title" />
-    <label for="summary">Summary:</label>
-    <input type="text" name="summary" value="" id="summary" />
-    <label for="description">Description:</label>
-    <input type="text" name="description" value="" id="description" />
-    <label for="is_idea">Idea:</label>
-    <input type="checkbox" name="is_idea" value="" id="is_idea"/>
+    <title>Feed</title>
+<!--     <script src="{% static 'web_app/js/feed.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'web_app/css/feedstyle.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/feedstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/0e91de170f.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <link rel="stylesheet" href="{% static 'css/onboarding.css' %}">
+    <title>Welcome to townhall</title>
+{% endblock head %}
+
+{% block body %}
+{#<form action="" method="POST">#}
+{#    {% csrf_token %}#}
+{#    <input type="text" name="title" value="" placeholder="title" id="title" />#}
+{#    <input type="text" name="summary" value="" placeholder="summary" id="summary" />#}
+{#    <input type="text" name="description" value="" placeholder="description" id="description" />#}
+{#    <input type="text" name="city" value="" placeholder="city" id="city">#}
+{#    <input type="text" name="state" value="" placeholder="state" id="state">#}
+{#    <input type="text" name="zipcode" value="" placeholder="zipcode" id="zipcode">#}
+{##}
+    {#    <input type="checkbox" name="is_idea" value="" id="is_idea"/>#}
 {#    <label for="categories">Categories:</label>#}
 {#    <input type="text" name="categories" value="" id="categories" />#}
-    <input type="submit" value="register" />
-</form>
-</body>
-</html>
+{#    <input type="submit" value="register" />#}
+{#</form>#}
+
+            <div class="col-sm-12 col-md-6 registration">
+            <div class="subsection">
+            <h4>Post your idea</h4>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+{#                    <input class="form-control" type="text" name="title" id="title" placeholder="title" value="">#}
+                    <input class="form-control" type="text" name="title" value="" placeholder="title" id="title" />
+                </div>
+                <div class="form-group">
+{#                    <input class="form-control" type="text" name="title" id="summary" placeholder="summary" value="">#}
+                <input class="form-control" type="text" name="summary" value="" placeholder="summary" id="summary" />
+                </div>
+                <div class="form-group">
+{#                    <input class="form-control" type="text" name="description" id="description" placeholder="description" value="">#}
+                <input class="form-control" type="text" name="description" value="" placeholder="description" id="description" />
+                </div>
+                <div class="form-group">
+{#                    <input class="form-control" type="text" name="city" id="city" placeholder="city">#}
+                    <input class="form-control" type="text" name="city" value="" placeholder="city" id="city">
+
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="state" value="" placeholder="state" id="state">
+{#                    <input class="form-control" type="text" name="state" id="state" placeholder="state">#}
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="zipcode" value="" placeholder="zipcode" id="zipcode">
+{#                    <input class="form-control" type="text" name="zipcode" id="zipcode" placeholder="zipcode">#}
+                </div>
+                    <button type="submit" class="btn btn-primary register">Register</button>
+{#                <button type="submit" class="btn btn-primary register">Register</button>#}
+            </form>
+            </div>
+        </div>
+{% endblock body %}
+{#>>>>>>> acae25d5ee2be304c394ae71c7acc790a143eaa3#}

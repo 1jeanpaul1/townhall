@@ -178,13 +178,6 @@ class SavedPostsView(View):
     def get(self, request):
         # gets all the posts
         template = 'townhall/home.html'
-        current_user = request.user
-        # user_interests = current_user.interests.all()
-        # user_categories = {}  # dictionary of user interest related categories
-        # for interest in user_interests:
-        #     current_categories = interest.category_set.all()
-        #     for category in current_categories:
-        #         user_categories[category.id] = True
 
         user_saved_posts = UserSavedPosts.objects.all().filter(user=request.user).order_by('added_on').reverse()
         feed_posts = []
@@ -259,7 +252,7 @@ class UserRegistrationView(View):
 
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('../newpost')
+                return redirect(reverse('townhall_external:all_posts'))
 
         return render(request, self.template_name, {'form': form})
 
@@ -285,9 +278,6 @@ class LoginView(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        print(form.is_valid())
-        print(form.data)
-        print(request.POST)
         if form.is_valid():
             # form_user = form.save(commit=False)
             email = form.cleaned_data['email']
@@ -310,66 +300,29 @@ class UserFormPostView(View):
     # blank form
     def get(self, request):
         form = self.form_class(None)
-        context = {}
-        context['categories'] = Category.objects.all()
-        context['user'] = request.user
+        # context = {}
+        # context['categories'] = Category.objects.all()
+        # context['user'] = request.user
         return render(request, self.template_name, {'form': form})
 
         # process user registration
 
     def post(self, request):
-        # print(request.POST)
-        # form = self.form_class(request.POST)
-        #print(form.is_valid())
-        #print(form.data)
-        # if form.is_valid():
-        curuser = request.user
-        curuser.is_active = True
-        # print(curuser)
-            # post = form.save(commit=False)
-        data = request.POST
-        title = data.get('title', '')
-        summary = data.get('summary', '')
-        description = data.get('description', '')
-        is_idea = 'is_idea' in data
-        # categories = data.get('categories', '')
-        # print(data)
-        # print(is_idea)
-        print(request.user.id)
-        curuser.save()
-        curuser.fullclean
-        post = UserPost.objects.create(user_id=request.user.id, title=title, summary=summary, description=description,
-                                is_idea=is_idea)
-        # post.save()
-        # # post.categories.add(categories)
-        #     # cleanred (normalized data)
-        #     title = form.cleaned_data['title']
-        #     summary = form.cleaned_data['summary']
-        #     description = form.cleaned_data['description']
-        #     is_idea = form.cleaned_data['is_idea']
-        #     categories = form.cleaned_data['categories']
-        #
-        #     post.save()
-        #
-        #     if user.is_active:
-        #         login(request, user)
-        #         return HttpResponseRedirect('../home')
-        #
-        # return render(request, self.template_name, {'form': form})
-            # user = curuser
-            # title = form.cleaned_data['title']
-            # summary = form.cleaned_data['summary']
-            # description = form.cleaned_data['description']
-            # # is_idea = form.cleaned_data['is_idea']
-            # # categories = form.cleaned_data['categories']
-            # # print(form.data)
-            # post.save()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            summary = form.cleaned_data['summary']
+            description = form.cleaned_data['description']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            zipcode = form.cleaned_data['zipcode']
+            UserPost.objects.create(user=request.user, title=title, city=city, state=state, zipcode=zipcode,
+                                    description=description, summary=summary)
+            return redirect(reverse('townhall_external:all_posts'))
 
-            # if user.is_active:
-            #     login(request, user)
-            #     return HttpResponseRedirect('../home')
+        return render(request, self.template_name, {'form': form})
 
-        return render(request, self.template_name, )#{'form': form})
-
-
-# >>>>>>> acae25d5ee2be304c394ae71c7acc790a143eaa3
+class PostView(View):
+    template_name = 'townhall/post.html'
+    def get(self, request):
+        return render(request, self.template_name)
