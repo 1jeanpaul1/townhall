@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from . import views
-from views import HomeView, UserRegistrationView, LogoutView, ProfileView, FeedView, LoginView, UserFormPostView
+from views import AllPostsView, UserRegistrationView, LogoutView, ProfileView, LoginView, UserFormPostView,\
+    FeedView, SavedPostsView
 from django.contrib.auth.views import login, login_required
 
 def check_login(view_function):
@@ -10,6 +11,8 @@ def check_login(view_function):
 login_url = '/townhall/login/'
 urlpatterns = [
     url(r'^home/$', login_required(FeedView.as_view()), name='home'),
+    url(r'^home/all_posts/$', login_required(AllPostsView.as_view()), name='all_posts'),
+    url(r'^home/saved_posts/$', login_required(SavedPostsView.as_view()), name='saved_posts'),
     # url(r'^login/$', login, {'template_name': 'townhall/login.html'}, name='login'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', UserRegistrationView.as_view(), name='register'),

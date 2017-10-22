@@ -22,6 +22,14 @@ class Interest(models.Model):
 
     ALREADY_EXISTS = 'The Interest already exists'
 
+
+    def __unicode__(self):
+        return self.name
+
+
+    class Meta:
+        verbose_name_plural = 'interests'
+
 # *************USER AND PERMISSION MODELS*********************
 class Permission(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -221,10 +229,10 @@ class UserPost(models.Model):
     disliked = models.IntegerField(default=0)
     is_idea = models.BooleanField(default=True)
     # could go in either Category or Product class
-    # categories = models.ManyToManyField(
-    #     Category, blank=True,
-    #     related_name='post_category'
-    #     )
+    categories = models.ManyToManyField(
+        Category, blank=True,
+        related_name='post_category'
+        )
 
     @property
     def aggregate_reactions(self):
@@ -236,7 +244,8 @@ class UserPost(models.Model):
         elif aggregate_count > 0:
             result += '+' + aggregate_string
         else:
-            result += '-' + aggregate_string
+            result += aggregate_string
+        return result
 
     @property
     def idea_or_venture(self):
@@ -244,6 +253,9 @@ class UserPost(models.Model):
             return 'Idea'
         else:
             return 'Venture'
+
+    def __unicode__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'User Post'

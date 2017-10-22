@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pytz
 from django.http import HttpResponse, HttpRequest
 from django.contrib import auth
 from django.http import HttpResponse
@@ -17,53 +18,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 # from django.views.generic import View
 from .forms import UserRegistration, UserFormPost, UserLogin
+from datetime import timedelta
+# import datetime
+from datetime import datetime
+from django import template
+from django.utils.timesince import timesince
 
 # from django.contrib import auth
 
 from models import AppUser, UserPost, Category
-
-
-# Create your views here.
-
-
-# def index(request):
-#     return HttpResponse("TOWN HALL START")
-#
-# def detail(request, question_id):
-#     return HttpResponse("You're looking at FREAKING TOWN HALL %s." % question_id)
-#
-# def results(request, question_id):
-#     response = "You're looking at the results of question %s."
-#     return HttpResponse(response % question_id)
-#
-# def vote(request, question_id):
-#     return HttpResponse("You're voting on question %s." % question_id)
-
-# def login(request):
-#     c = {}
-#     c.update(csrf(request))
-#     return render(request, 'townhall/login.html', c)
-#
-#
-# def auth_view(request):
-#     username = request.POST.get('username', '')
-#     password = request.POST.get('password', '')
-#     user = auth.authenticate(username=username, password=password)
-#
-#     if user is not None:
-#         auth.login(request, user)
-#         return HttpResponseRedirect('../../townhall/home/')
-#     else:
-#         return HttpResponseRedirect('../../townhall/login/')
-
-
-
-# class HomeView(View):
-#
-#     def get(self, request):
-#         template = 'townhall/home.html'
-#         context = {'user': request.user}
-#         return render(request, template, context)
 
 class ProfileView(View):
     def get(self, request):
@@ -96,13 +59,61 @@ class ProfileView(View):
             return render(request, template, context)
 
 
-class HomeView(View):
+class AllPostsView(View):
     def get(self, request):
+        # gets all the posts
         template = 'townhall/home.html'
         current_user = request.user
-        context = {'user': request.user}
-        return render(request, template, context)
+        # user_interests = current_user.interests.all()
+        # user_categories = {}  # dictionary of user interest related categories
+        # for interest in user_interests:
+        #     current_categories = interest.category_set.all()
+        #     for category in current_categories:
+        #         user_categories[category.id] = True
 
+        user_posts = UserPost.objects.all().order_by('added_on').reverse()
+        feed_posts = []
+        for current_post in user_posts:
+            post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
+                    'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
+                    'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
+                    'description': current_post.description}
+            if current_post.liked - current_post.disliked < 0:
+                post['attitude'] = 0
+            else:
+                post['attitude'] = 1
+            time_passed = datetime.utcnow().replace(tzinfo=pytz.UTC) - current_post.added_on
+            days = time_passed.days
+            hours = time_passed.seconds // 3600
+            minutest_passed = (time_passed.seconds // 60) % 60
+            print("****days test***")
+            print(days)
+            print(time_passed)
+            if days > 0:
+                if days == 1:
+                    statement = 'day'
+                else:
+                    statement = 'days'
+                time_since = '%s %s ago' % (days, statement)
+            elif hours > 0:
+                if hours == 1:
+                    statement = 'hour'
+                else:
+                    statement = 'hours'
+                time_since = '%s %s ago' % (hours, statement)
+            elif minutest_passed > 0:
+                if minutest_passed == 1:
+                    statement = 'minute'
+                else:
+                    statement = 'minutes'
+                time_since = '%s %s ago' % (minutest_passed, statement)
+            else:
+                time_since = 'just now'
+            post['time_since_upload'] = time_since
+            feed_posts.append(post)
+
+        context = {'posts': feed_posts, 'user': request.user.get_full_name, 'tab': 1}
+        return render(request, template, context)
 
 class FeedView(View):
     def get(self, request):
@@ -110,36 +121,112 @@ class FeedView(View):
         template = 'townhall/home.html'
         current_user = request.user
         user_interests = current_user.interests.all()
-        # print(user_interests)
         user_categories = {}  # dictionary of user interest related categories
         for interest in user_interests:
-            current_categories = interest.category_set.all()
+            current_categories = interest.category_interests.all()
             for category in current_categories:
                 user_categories[category.id] = True
-        paginate_count = 5
 
-        user_posts = UserPost.objects.all().order_by('added_on')
-        # looks at first 5, then filters on that
-        filter_five_posts = []
-        count = 1
-        last_flipped_index = 0
+        user_posts = UserPost.objects.all().order_by('added_on').reverse()
+        feed_posts = []
+        for current_post in user_posts:
+            related_post = False
+            for x in current_post.categories.all():
+                if user_categories.get(x.id, False):
+                    related_post = True
+                    break
+            if related_post:
+                post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
+                        'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
+                        'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
+                        'description': current_post.description}
+                if current_post.liked - current_post.disliked < 0:
+                    post['attitude'] = 0
+                else:
+                    post['attitude'] = 1
+                time_passed = datetime.utcnow().replace(tzinfo=pytz.UTC) - current_post.added_on
+                days = time_passed.days
+                hours = time_passed.seconds // 3600
+                minutest_passed = (time_passed.seconds // 60) % 60
+                if days > 0:
+                    if days == 1:
+                        statement = 'day'
+                    else:
+                        statement = 'days'
+                    time_since = '%s %s ago' % (days, statement)
+                elif hours > 0:
+                    if hours == 1:
+                        statement = 'hour'
+                    else:
+                        statement = 'hours'
+                    time_since = '%s %s ago' % (hours, statement)
+                elif minutest_passed > 0:
+                    if minutest_passed == 1:
+                        statement = 'minute'
+                    else:
+                        statement = 'minutes'
+                    time_since = '%s %s ago' % (minutest_passed, statement)
+                else:
+                    time_since = 'just now'
+                post['time_since_upload'] = time_since
+                feed_posts.append(post)
+        context = {'posts': feed_posts, 'user': request.user.get_full_name, 'tab': 0}
+        return render(request, template, context)
+
+class SavedPostsView(View):
+    def get(self, request):
+        # gets all the posts
+        template = 'townhall/home.html'
+        current_user = request.user
+        # user_interests = current_user.interests.all()
+        # user_categories = {}  # dictionary of user interest related categories
+        # for interest in user_interests:
+        #     current_categories = interest.category_set.all()
+        #     for category in current_categories:
+        #         user_categories[category.id] = True
+
+        user_posts = UserPost.objects.all().order_by('added_on').reverse()
         feed_posts = []
         for current_post in user_posts:
             post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
                     'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
                     'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
                     'description': current_post.description}
+            if current_post.liked - current_post.disliked < 0:
+                post['attitude'] = 0
+            else:
+                post['attitude'] = 1
+            time_passed = datetime.utcnow().replace(tzinfo=pytz.UTC) - current_post.added_on
+            days = time_passed.days
+            hours = time_passed.seconds // 3600
+            minutest_passed = (time_passed.seconds // 60) % 60
+            print("****days test***")
+            print(days)
+            print(time_passed)
+            if days > 0:
+                if days == 1:
+                    statement = 'day'
+                else:
+                    statement = 'days'
+                time_since = '%s %s ago' % (days, statement)
+            elif hours > 0:
+                if hours == 1:
+                    statement = 'hour'
+                else:
+                    statement = 'hours'
+                time_since = '%s %s ago' % (hours, statement)
+            elif minutest_passed > 0:
+                if minutest_passed == 1:
+                    statement = 'minute'
+                else:
+                    statement = 'minutes'
+                time_since = '%s %s ago' % (minutest_passed, statement)
+            else:
+                time_since = 'just now'
+            post['time_since_upload'] = time_since
             feed_posts.append(post)
 
-        context = {'posts': feed_posts, 'user': request.user.get_full_name}
-        print(feed_posts)
-
-        # for post_category in current_post.categories:
-        #     if user_categories.get(post_category.id, False):
-        #         if (coun)
-        #         print
-        #         count += 1
-        #         continue
+        context = {'posts': feed_posts, 'user': request.user.get_full_name, 'tab': 2}
         return render(request, template, context)
 
 
