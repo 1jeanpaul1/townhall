@@ -36,15 +36,13 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">Venture Title</h4>
+      <h4 class="col-8">{{current_post.title}}</h4>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
     </div>
     <div class="row justify-content-start">
-      <p class="col-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lacinia, turpis eu dapibus tristique, nulla enim faucibus quam, aliquet scelerisque eros leo non ante. Mauris semper, nunc sed condimentum aliquet, quam arcu faucibus ex, hendrerit malesuada sapien nisi vitae nibh. Suspendisse magna mi, consectetur in luctus id, efficitur feugiat justo. Quisque lacinia mi quis nisi semper, non cursus metus tempor. Aliquam vel venenatis est. Sed quis tellus sapien. Integer viverra metus a mollis luctus. Praesent id sem lorem. Praesent at ullamcorper tortor.
-      <br><br>
-      Nam in aliquam odio. Quisque cursus enim velit, convallis condimentum sapien fringilla in. Mauris tincidunt erat quis bibendum porta. Nulla mattis neque tellus, ac elementum turpis volutpat in. Aenean ornare, nibh vitae accumsan interdum, ex leo porta velit, ut pellentesque elit erat eu mauris. Cras mollis quis nulla eu lacinia. Nullam ut aliquam leo, a pulvinar nunc. Etiam efficitur eros vitae tortor vulputate fermentum. Vivamus condimentum est lorem, nec posuere nibh porttitor ac. Integer eget scelerisque mauris, sed dapibus urna. Quisque egestas nulla nisi, at venenatis elit sodales sit amet. Ut lectus nulla, condimentum quis gravida quis, laoreet nec augue. Sed sit amet ultrices dolor. Nullam eget risus neque. Etiam pretium, odio ac semper sollicitudin, felis lorem iaculis nunc, quis tempor tellus mauris id nisi. Morbi in sem sit amet velit efficitur facilisis porta quis quam.
+      <p class="col-12">{{post.description}}
 </p>
-      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Firstname Lastname
+      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> {{current_post.user}}
       <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
       <div class="col-0 col-md-2 col-lg-4"></div>
       <p id = "comments" class="col-3 col-md-2 col-lg-2"> 10 <i class="fa fa-comment-o"></i></p>
