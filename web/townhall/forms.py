@@ -13,6 +13,8 @@
 #         fields = {"email", }
 
 # from django.contrib.auth.models import User
+from django.forms import EmailField
+
 from models import AppUser, UserPost
 from django import forms
 
@@ -24,7 +26,14 @@ class UserRegistration(forms.ModelForm):
         model = AppUser
         fields = ['first_name', 'last_name', 'email', 'password']
 
-    # print()
+
+class UserLogin(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput)
+    email = EmailField(max_length=255)
+
+    # class Meta:
+    #     model = AppUser
+    #     fields = ['email', 'password']
 
 class UserFormPost(forms.ModelForm):
     class Meta:
