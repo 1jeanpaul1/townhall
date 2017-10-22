@@ -4,7 +4,7 @@
 {% block head %}
     <title>____ - Post Details</title>
 
-    <link rel="stylesheet" href="feedstyle.css">
+    <link rel="stylesheet" href="{% static 'css/feedstyle.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -36,13 +36,13 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">{{current_post.title}}</h4>
+      <h4 class="col-8">{{title}}</h4>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
     </div>
     <div class="row justify-content-start">
-      <p class="col-12">{{post.description}}
+      <p class="col-12">{{description}}
 </p>
-      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> {{current_post.user}}
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> {{user}}
       <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
       <div class="col-0 col-md-2 col-lg-4"></div>
       <p id = "comments" class="col-3 col-md-2 col-lg-2"> 10 <i class="fa fa-comment-o"></i></p>
@@ -76,13 +76,13 @@
     <div class="row justify-content-start">
       <p class="col-12">
       <br>I am in love with you!</p>
-      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Jean Paul T.
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> Jean Paul T.
       <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
 
 <hr>
       <p class="col-12">
       <br>I am in hate with you!</p>
-      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Nate S.
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> Nate S.
       <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
 
 
