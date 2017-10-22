@@ -185,7 +185,7 @@ class SavedPostsView(View):
             post = {'user': saved_post.user.get_full_name(), 'title': saved_post.post.title,
                     'reactions': saved_post.post.aggregate_reactions, 'idea_or_venture': saved_post.post.idea_or_venture,
                     'comment_count': Comment.objects.filter(post=saved_post.post).count(), 'venture_count': '',
-                    'description': saved_post.post.description, 'post_id': current_post.id}
+                    'description': saved_post.post.description, 'post_id': saved_post.id}
             if saved_post.post.liked - saved_post.post.disliked < 0:
                 post['attitude'] = 0
             else:
