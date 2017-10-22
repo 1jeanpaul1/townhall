@@ -93,7 +93,9 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">{{post.title}}</h4>
+      <a href="../newpost/{{ post.post_id }}">
+        <h4 class="col-8">{{post.title}}</h4>
+          </a>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
     </div>
     <div class="row justify-content-start">
@@ -130,7 +132,9 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">{{post.title}}</h4>
+      <a href="../post/{{ post.post_id }}">
+        <h4 class="col-8">{{post.title}}</h4>
+          </a>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 idea-type">{{post.idea_or_venture}} <i class="fa fa-lightbulb-o"></i></p>
     </div>
     <div class="row justify-content-start">
