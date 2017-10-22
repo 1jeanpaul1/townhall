@@ -1,13 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>WE CONNECTED THE FRONT END WITH BACKEND</p>
-<p>THE NEWS FEED WILL GO SOMEWHERE IN HERE</p>
-<h1>User: {{ user }}</h1>
-<a href="{%  url 'townhall_external:logout'%}">Log Out</a>
-</body>
-</html>
+{#<<<<<<< HEAD#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{#<p>WE CONNECTED THE FRONT END WITH BACKEND</p>#}
+{#<p>THE NEWS FEED WILL GO SOMEWHERE IN HERE</p>#}
+{#<h1>User: {{ user }}</h1>#}
+{#<a href="{%  url 'townhall_external:logout'%}">Log Out</a>#}
+{#</body>#}
+{#</html>#}
+{#=======#}
+
+{% extends 'web_app_master.html' %}
+{% load static from staticfiles %}
+<!--{% load i18n %}-->
+{% block head %}
+
+    <title>Feed</title>
+<!--     <script src="{% static 'web_app/js/feed.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'web_app/css/feedstyle.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/feedstyle.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% endblock head %}
+
+{% block body %}
+<div class="container feed">
+<!-- Post filter nav -->
+<br>
+  <div class="row justify-content-end">
+  <button class="btn btn-primary">+ New Post </button>
+  </div>
+
+  <div class="row justify-content-center">
+    <ul class="nav nav-pills col-8 ">
+      <li class="nav-item col-4">
+        <a class="nav-link active" href="#">My Feed</a>
+      </li>
+      <li class="nav-item col-4">
+        <a class="nav-link" href="#">All Posts</a>
+      </li>
+      <li class="nav-item col-4">
+        <a class="nav-link" href="#">Saved Posts</a>
+      </li>
+    </ul>
+  </div>
+<br>
+<div class="row posts justify-content-center">
+
+  {% for post in posts %}
+
+  {% if post.idea_or_venture == "Venture" %}
+<div class="row post post-venture col-lg-8 justify-content-center">
+  <div class="col-1 voting-venture align-self-center" style="">
+  <div class="row vote-container">
+    <div class="col-6">
+      <div class="row col-12" style="padding-bottom: 20px;">
+        <i class="fa fa-plus-circle"></i>
+      </div>
+      <p style="font-size:16px;">{{post.reactions}}</p>
+      <div class="row col-12">
+        <i class="fa fa-minus-circle"></i>
+      </div>
+      </div>
+    <div class="col-6">
+  
+      </div>
+    </div>
+  </div>
+  <div class="col-11">
+    <div class="row justify-content-between">
+      <h4 class="col-8">{{post.title}}</h4>
+      <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
+    </div>
+    <div class="row justify-content-start">
+      <p class="col-12">{{post.description}}</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> {{post.user}} <br><i style="color:gray; font-size: 12px;">1 day ago</i></p>
+      <div class="col-0 col-md-2 col-lg-4"></div>
+      <p id = "comments" class="col-3 col-md-2 col-lg-2"> {{post.comment_count}} <i class="fa fa-comment-o"></i></p>
+      <p id = "save" class="col-2 col-md-2 col-lg-1"><i class="fa fa-star-o"></i></p>
+    </div>
+</div>
+</div>
+
+  {% elif post.idea_or_venture == "Idea" %}
+   <div class="row post post-idea col-lg-8 justify-content-center">
+  <div class="col-1 voting-idea align-self-center" style="">
+  <div class="row vote-container">
+    <div class="col-6">
+      <div class="row col-12" style="padding-bottom: 20px;">
+        <i class="fa fa-plus-circle"></i>
+      </div>
+      <p style="font-size:16px;">{{post.reactions}}</p>
+      <div class="row col-12">
+        <i class="fa fa-minus-circle"></i>
+      </div>
+      </div>
+    <div class="col-6">
+
+      </div>
+    </div>
+  </div>
+  <div class="col-11">
+    <div class="row justify-content-between">
+      <h4 class="col-8">{{post.title}}</h4>
+      <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 idea-type">{{post.idea_or_venture}} <i class="fa fa-lightbulb-o"></i></p>
+    </div>
+    <div class="row justify-content-start">
+      <p class="col-12">{{post.description}}</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> {{post.user}} <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
+      <div class="col-0 col-md-2 col-lg-4"></div>
+      <p id = "comments" class="col-3 col-md-2 col-lg-2">{{post.comment_count}} <i class="fa fa-comment-o"></i></p>
+      <p id = "save" class="col-2 col-md-2 col-lg-1"><i class="fa fa-star-o"></i></p>
+    </div>
+</div>
+</div>
+  {% else %}
+  {% endif %}
+
+  {% endfor %}
+
+
+</div>
+</div>
+
+{% endblock body %}
+{#>>>>>>> acae25d5ee2be304c394ae71c7acc790a143eaa3#}

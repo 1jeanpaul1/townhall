@@ -35,7 +35,8 @@ class UserLogin(forms.Form):
     #     model = AppUser
     #     fields = ['email', 'password']
 
+
 class UserFormPost(forms.ModelForm):
     class Meta:
         model = UserPost
-        fields = ['user', 'title', 'summary', 'description', 'is_idea', 'categories']
+        fields = ['title', 'summary', 'description']
