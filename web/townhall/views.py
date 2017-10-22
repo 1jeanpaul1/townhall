@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.template.context_processors import csrf
 # from django.core.context_processors
+from django.urls import reverse
 from django.views.generic import View
 from django.http import Http404
 from django.shortcuts import render
@@ -15,11 +16,12 @@ from models import UserPost, Comment
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 # from django.views.generic import View
-from .forms import UserRegistration, UserFormPost
+from .forms import UserRegistration, UserFormPost, UserLogin
 
 # from django.contrib import auth
 
 from models import AppUser, UserPost, Category
+
 
 # Create your views here.
 
@@ -64,15 +66,14 @@ from models import AppUser, UserPost, Category
 #         return render(request, template, context)
 
 class ProfileView(View):
-
     def get(self, request):
         cururl = request.path
         currentprofile = AppUser.objects.get(email=str(HttpRequest.path[17:]))
         if (currentprofile.is_entrepreneur):
             template = 'entrepreneurprofile.html'
             context = {}
-            context['username']= currentprofile.get_full_name()
-            context['numideas']= UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
+            context['username'] = currentprofile.get_full_name()
+            context['numideas'] = UserPost.objects.filter(currentprofile).filter(is_idea=True).count()
             context['numventures'] = UserPost.objects.filter(currentprofile).filter(is_idea=False).count()
             context['location'] = currentprofile.city + ", " + currentprofile.country
             context['bio'] = currentprofile.bio
@@ -82,7 +83,7 @@ class ProfileView(View):
             context['interests'] = currentprofile.interests
             context['photo'] = currentprofile.profile_image
             return render(request, template, context)
-        elif():
+        elif ():
             template = 'citizenprofile'
             context = {}
             context['username'] = currentprofile.get_full_name()
@@ -94,8 +95,8 @@ class ProfileView(View):
             context['photo'] = currentprofile.profile_image
             return render(request, template, context)
 
-class HomeView(View):
 
+class HomeView(View):
     def get(self, request):
         template = 'townhall/home.html'
         current_user = request.user
@@ -104,14 +105,13 @@ class HomeView(View):
 
 
 class FeedView(View):
-
     def get(self, request):
-        #gets all the posts
+        # gets all the posts
         template = 'townhall/home.html'
         current_user = request.user
         user_interests = current_user.interests.all()
         # print(user_interests)
-        user_categories = {} # dictionary of user interest related categories
+        user_categories = {}  # dictionary of user interest related categories
         for interest in user_interests:
             current_categories = interest.category_set.all()
             for category in current_categories:
@@ -134,18 +134,18 @@ class FeedView(View):
         context = {'posts': feed_posts, 'user': request.user.get_full_name}
         print(feed_posts)
 
-            # for post_category in current_post.categories:
-            #     if user_categories.get(post_category.id, False):
-            #         if (coun)
-            #         print
-            #         count += 1
-            #         continue
+        # for post_category in current_post.categories:
+        #     if user_categories.get(post_category.id, False):
+        #         if (coun)
+        #         print
+        #         count += 1
+        #         continue
         return render(request, template, context)
 
 
 class UserRegistrationView(View):
     form_class = UserRegistration
-    template_name = 'townhall/register.html'
+    template_name = 'townhall/home.html'
 
     # displays a blank form
     def get(self, request):
@@ -175,13 +175,45 @@ class UserRegistrationView(View):
 
         return render(request, self.template_name, {'form': form})
 
+
 class LogoutView(View):
     logout = '/'
 
     def get(self, request):
-        print(request)
+        # print(request)
         logout(request)
-        return redirect('login')
+        return redirect(reverse('townhall_external:login'))
+
+
+class LoginView(View):
+    form_class = UserLogin
+    success_template_name = 'townhall/home.html'
+    failure_template_name = 'townhall/login.html'
+
+    # displays a blank form
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.failure_template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        print(form.is_valid())
+        print(form.data)
+        print(request.POST)
+        if form.is_valid():
+            # form_user = form.save(commit=False)
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(username=email, password=password)
+            print("*****user****")
+            print(user.is_active)
+            print(user)
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('../home')
+
+        return render(request, self.failure_template_name, {'form': form})
+
 
 class UserFormPostView(View):
     form_class = UserFormPost
@@ -220,9 +252,22 @@ class UserFormPostView(View):
         curuser.fullclean
         post = UserPost.objects.create(user_id=request.user.id, title=title, summary=summary, description=description,
                                 is_idea=is_idea)
-        post.save()
-        # post.categories.add(categories)
-            # cleanred (normalized data)
+        # post.save()
+        # # post.categories.add(categories)
+        #     # cleanred (normalized data)
+        #     title = form.cleaned_data['title']
+        #     summary = form.cleaned_data['summary']
+        #     description = form.cleaned_data['description']
+        #     is_idea = form.cleaned_data['is_idea']
+        #     categories = form.cleaned_data['categories']
+        #
+        #     post.save()
+        #
+        #     if user.is_active:
+        #         login(request, user)
+        #         return HttpResponseRedirect('../home')
+        #
+        # return render(request, self.template_name, {'form': form})
             # user = curuser
             # title = form.cleaned_data['title']
             # summary = form.cleaned_data['summary']
@@ -239,3 +284,4 @@ class UserFormPostView(View):
         return render(request, self.template_name, )#{'form': form})
 
 
+# >>>>>>> acae25d5ee2be304c394ae71c7acc790a143eaa3

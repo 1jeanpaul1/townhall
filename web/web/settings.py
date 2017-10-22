@@ -29,11 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-RAVEN_CONFIG = {
-   'dsn': 'http://public:secret@example.com/1',
-   'string_max_length': 100000,
-}
-
 
 # Application definition
 

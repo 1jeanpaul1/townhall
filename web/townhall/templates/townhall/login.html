@@ -31,15 +31,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST">
+                <form method="POST" action="{% url 'townhall_external:login' %}">
                     {% csrf_token %}
                 <div class="form-group">
-                    <input type="email" class="form-control" id="userEmail" placeholder="Email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"/>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
                 </div>
-                <button type="submit" class="btn btn-primary register">Sign In</button>
+                <input type="submit" class="btn btn-primary register" value="Sign In"/>
                 </form>
             </div>
             </div>
@@ -66,7 +66,8 @@
         <div class="col-sm-12 col-md-6 registration">
             <div class="subsection">
             <h4>Register to join townhall</h4>
-            <form>
+            <form action="" method="POST">
+                {% csrf_token %}
                 <div class="form-group">
                     <input class="form-control" id="firstName" aria-describedby="firstNameHelp" placeholder="First name">
                 </div>
