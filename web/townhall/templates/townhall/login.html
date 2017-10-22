@@ -1,17 +1,90 @@
 <!DOCTYPE html>
+{% load static from staticfiles %}
+<!-- {% load i18n %} -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>login page</p>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login"/>
-</form>
+    <meta charset="utf-8">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/0e91de170f.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <link rel="stylesheet" href="{% static 'css/onboarding.css' %}">
+    <title>Welcome to townhall</title>
+</head>
+
+<body>
+
+    <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Sign in to townhall</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                <div class="form-group">
+                    <input type="email" class="form-control" id="userEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary register">Sign In</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="#"><img src="{% static 'content/images/logo-white.png'%}"/></a>              
+        <div id="signIn">
+            <ul class="navbar-nav nav">
+                <li><a href="#" data-toggle="modal" data-target="#signInModal">Sign in</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="col-sm-12 col-md-6 landing-info">
+            <img src="{% static 'content/images/logo-green-large.png'%}"/>
+            <div class="subsection">
+                <h3>Connect with your community.</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare erat egestas nisl elementum fermentum. Integer imperdiet dui accumsan, aliquam augue sed, feugiat nisl. Vestibulum imperdiet sodales justo ut pulvinar. Nam a laoreet lectus. Curabitur semper sodales accumsan. Vivamus faucibus metus elit, at tempus est lacinia ut. Aliquam erat volutpat.</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 registration">
+            <div class="subsection">
+            <h4>Register to join townhall</h4>
+            <form>
+                <div class="form-group">
+                    <input class="form-control" id="firstName" aria-describedby="firstNameHelp" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" id="lastName" aria-describedby="lastNameHelp" placeholder="Last name">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary register">Register</button>
+            </form>
+            </div>
+            <div class="sign-in">Already have an account? <a href="#" data-toggle="modal" data-target="#signInModal">Sign in</a></div>
+        </div>
+    </div>
 
 </body>
 </html>
