@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from . import views
 from views import AllPostsView, UserRegistrationView, LogoutView, ProfileView, LoginView, UserFormPostView,\
-    FeedView, SavedPostsView, PostView
+    FeedView, SavedPostsView
 from django.contrib.auth.views import login, login_required
 
 def check_login(view_function):
@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^logout/$', login_required(LogoutView.as_view()), name='logout'),
     url(r'^user/([0-9]+)$', login_required(ProfileView), name = 'profile'),
     url(r'^newpost/$', login_required(UserFormPostView.as_view()), name='newpost'),
-    url(r'^post/([0-9]+)$', login_required(PostView.as_view()), name = 'post'),
+    url(r'^post/([0-9]+)$', views.getPost, name='get_post_data'),
+    # url(r'^post/([0-9]+)$', login_required(views.getPost()), name = 'post'),
     # url(r'^feed/$', FeedView.as_view(), name='feed'),
 ]

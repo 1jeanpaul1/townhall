@@ -77,7 +77,7 @@ class AllPostsView(View):
             post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
                     'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
                     'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
-                    'description': current_post.description}
+                    'description': current_post.description, 'post_id': post.id}
             if current_post.liked - current_post.disliked < 0:
                 post['attitude'] = 0
             else:
@@ -139,7 +139,7 @@ class FeedView(View):
                 post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
                         'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
                         'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
-                        'description': current_post.description}
+                        'description': current_post.description, 'post_id': post.id}
                 if current_post.liked - current_post.disliked < 0:
                     post['attitude'] = 0
                 else:
@@ -185,7 +185,7 @@ class SavedPostsView(View):
             post = {'user': saved_post.user.get_full_name(), 'title': saved_post.post.title,
                     'reactions': saved_post.post.aggregate_reactions, 'idea_or_venture': saved_post.post.idea_or_venture,
                     'comment_count': Comment.objects.filter(post=saved_post.post).count(), 'venture_count': '',
-                    'description': saved_post.post.description}
+                    'description': saved_post.post.description, 'post_id': post.id}
             if saved_post.post.liked - saved_post.post.disliked < 0:
                 post['attitude'] = 0
             else:
@@ -322,7 +322,21 @@ class UserFormPostView(View):
 
         return render(request, self.template_name, {'form': form})
 
-class PostView(View):
+# class PostView(View):
+#     template_name = 'townhall/post.html'
+#     def get(self, request):
+#         return render(request, self.template_name)
+
+
+def getPost(request, post_id):
     template_name = 'townhall/post.html'
-    def get(self, request):
-        return render(request, self.template_name)
+    current_post = UserPost.objects.get(id=post_id)
+    post_data = {'post_user': current_post.user.get_full_name(), 'description': current_post.description,
+                 'reactions': current_post.aggregate_reactions, 'title': current_post.title}
+    current_post_comments = []
+    for comment in current_post.post_comment.all():
+        commend_data = {'comment_user': comment.user.get_full_name(), 'content': comment.content}
+        current_post_comments.append(commend_data)
+    post_data['comments'] = current_post_comments
+    context = post_data
+    return render(request, template_name, context)
