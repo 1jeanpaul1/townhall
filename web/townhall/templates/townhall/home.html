@@ -1,5 +1,4 @@
-<!doctype html>
-<html lang="en">
+
 {% extends 'web_app_master.html' %}
 {% load static from staticfiles %}
 {% load i18n %}
@@ -8,16 +7,10 @@
     <title>Feed</title>
 <!--     <script src="{% static 'web_app/js/feed.js' %}"></script>
     <link rel="stylesheet" href="{% static 'web_app/css/feedstyle.css' %}"> -->
-    <link rel="stylesheet" href="feedstyle.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" integrity="sha384-dNpIIXE8U05kAbPhy3G1cz+yZmTzA6CY8Vg/u2L9xRnHjJiAK76m2BIEaSEV+/aU" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<!-- {% endblock head %} -->
+    <link rel="stylesheet" href="{% static 'css/feedstyle.css' %}">
 
-<body style="font-family: 'Roboto', sans-serif;
-">
+{% endblock head %}
+
 {% block body %}
 <div class="container feed">
 <!-- Post filter nav -->
@@ -108,6 +101,5 @@
 </div>
 </div>
 
-</body>
+
 {% endblock body %}
-</html>
