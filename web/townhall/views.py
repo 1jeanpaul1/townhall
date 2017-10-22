@@ -127,7 +127,8 @@ class FeedView(View):
         for current_post in user_posts:
             post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
                     'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
-                    'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': ''}
+                    'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
+                    'description': current_post.description}
             feed_posts.append(post)
 
         context = {'posts': feed_posts, 'user': request.user.get_full_name}
