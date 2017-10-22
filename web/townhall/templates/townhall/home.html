@@ -47,7 +47,7 @@
       <div class="row col-12" style="padding-bottom: 20px;">
         <i class="fa fa-plus-circle"></i>
       </div>
-      <p style="font-size:16px;">+60</p>
+      <p style="font-size:16px;">{{post.reactions}}</p>
       <div class="row col-12">
         <i class="fa fa-minus-circle"></i>
       </div>
@@ -59,14 +59,14 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">Venture Title</h4>
+      <h4 class="col-8">{{post.title}}</h4>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
     </div>
     <div class="row justify-content-start">
-      <p class="col-12">This is a sample description that I want to last about two lines. Hopefully this is the optimal amount of letters to make the description look correct. Here are some more characters for good measure, and it's about to be truncated so get...</p>
-      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> Firstname Lastname <br><i style="color:gray; font-size: 12px;">1 day ago</i></p>
+      <p class="col-12">{{post.description}}</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> {{post.user}} <br><i style="color:gray; font-size: 12px;">1 day ago</i></p>
       <div class="col-0 col-md-2 col-lg-4"></div>
-      <p id = "comments" class="col-3 col-md-2 col-lg-2"> 10 <i class="fa fa-comment-o"></i></p>
+      <p id = "comments" class="col-3 col-md-2 col-lg-2"> {{post.comment_count}} <i class="fa fa-comment-o"></i></p>
       <p id = "save" class="col-2 col-md-2 col-lg-1"><i class="fa fa-star-o"></i></p>
     </div>
 </div>

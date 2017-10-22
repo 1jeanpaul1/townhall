@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'web_app_master.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% block head %}
+    <title>____ - Post Details</title>
 
-</body>
-</html>
+    <link rel="stylesheet" href="feedstyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% endblock head %}
+
+{% block body %}
+<div class="container feed">
+<!-- Post filter nav -->
+<br>
+
+<div class="row posts justify-content-center">
+
+<div class="row post post-venture col-lg-8 justify-content-center">
+  <div class="col-1 voting-venture align-self-start" style="">
+  <div class="row vote-container">
+    <div class="col-6">
+      <div class="row col-12" style="padding-bottom: 20px;">
+        <i class="fa fa-plus-circle"></i>
+      </div>
+      <p style="font-size:16px;">+60</p>
+      <div class="row col-12">
+        <i class="fa fa-minus-circle"></i>
+      </div>
+      </div>
+    <div class="col-6">
+
+      </div>
+    </div>
+  </div>
+  <div class="col-11">
+    <div class="row justify-content-between">
+      <h4 class="col-8">Venture Title</h4>
+      <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
+    </div>
+    <div class="row justify-content-start">
+      <p class="col-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lacinia, turpis eu dapibus tristique, nulla enim faucibus quam, aliquet scelerisque eros leo non ante. Mauris semper, nunc sed condimentum aliquet, quam arcu faucibus ex, hendrerit malesuada sapien nisi vitae nibh. Suspendisse magna mi, consectetur in luctus id, efficitur feugiat justo. Quisque lacinia mi quis nisi semper, non cursus metus tempor. Aliquam vel venenatis est. Sed quis tellus sapien. Integer viverra metus a mollis luctus. Praesent id sem lorem. Praesent at ullamcorper tortor.
+      <br><br>
+      Nam in aliquam odio. Quisque cursus enim velit, convallis condimentum sapien fringilla in. Mauris tincidunt erat quis bibendum porta. Nulla mattis neque tellus, ac elementum turpis volutpat in. Aenean ornare, nibh vitae accumsan interdum, ex leo porta velit, ut pellentesque elit erat eu mauris. Cras mollis quis nulla eu lacinia. Nullam ut aliquam leo, a pulvinar nunc. Etiam efficitur eros vitae tortor vulputate fermentum. Vivamus condimentum est lorem, nec posuere nibh porttitor ac. Integer eget scelerisque mauris, sed dapibus urna. Quisque egestas nulla nisi, at venenatis elit sodales sit amet. Ut lectus nulla, condimentum quis gravida quis, laoreet nec augue. Sed sit amet ultrices dolor. Nullam eget risus neque. Etiam pretium, odio ac semper sollicitudin, felis lorem iaculis nunc, quis tempor tellus mauris id nisi. Morbi in sem sit amet velit efficitur facilisis porta quis quam.
+</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Firstname Lastname
+      <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
+      <div class="col-0 col-md-2 col-lg-4"></div>
+      <p id = "comments" class="col-3 col-md-2 col-lg-2"> 10 <i class="fa fa-comment-o"></i></p>
+      <p id = "save" class="col-2 col-md-2 col-lg-1"><i class="fa fa-star-o"></i></p>
+    </div>
+</div>
+</div>
+
+<div class="row post post-venture col-lg-8 justify-content-center">
+  <div class="col-11">
+    <div class="row justify-content-between">
+      <h4 class="col-8">Updates</h4>
+    </div>
+    <div class="row justify-content-start">
+      <p class="col-12">
+      <i style="color:gray; font-size: 12px;">October 21st, 2017</i>
+      <br>Hired an assistant today named Jean Paul Torre! He has a great work ethic and is very loyal. I think he will make a great assistant, and he makes some great coffee!</p>
+      <p class="col-12">
+      <i style="color:gray; font-size: 12px;">October 14th, 2017</i>
+      <br>I bought an office today! Let's get this show on the road.</p>
+
+    </div>
+</div>
+</div>
+
+<div class="row post post-venture col-lg-8 justify-content-center">
+  <div class="col-11">
+    <div class="row justify-content-between">
+      <h4 class="col-8">Comments</h4><hr>
+    </div>
+    <div class="row justify-content-start">
+      <p class="col-12">
+      <br>I am in love with you!</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Jean Paul T.
+      <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
+
+<hr>
+      <p class="col-12">
+      <br>I am in hate with you!</p>
+      <p class="col-12 col-md-6 col-lg-5"><img src="propic.png" id="propic"> Nate S.
+      <br><i style="color:gray; font-size: 12px;">2 hours ago</i></p>
+
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- {% endblock body %} -->
