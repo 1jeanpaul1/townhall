@@ -33,8 +33,15 @@
 <div class="container feed">
 <!-- Post filter nav -->
 <br>
-<a href="{% url 'townhall_external:newpost' %}">
+
+  <div class="row justify-content-end logout">
+      <a href="{% url 'townhall_external:logout' %}">
+  <button class="btn btn-primary logout">Log Out </button>
+  </div>
+</a>
+
   <div class="row justify-content-end">
+      <a href="{% url 'townhall_external:newpost' %}">
   <button class="btn btn-primary">+ New Post </button>
   </div>
 </a>
@@ -93,11 +100,11 @@
   </div>
   <div class="col-11">
     <div class="row justify-content-between">
-      <h4 class="col-8">{{post.title}}</h4>
+      <h4 class="col-8">{{current_post.title}}</h4>
       <p style="font-size: 14px;" class="col-4 col-md-2 col-lg-2 venture-type">Venture <i class="fa fa-cube"></i></p>
     </div>
     <div class="row justify-content-start">
-      <p class="col-12">{{post.description}}</p>
+      <p class="col-12">{{current_post.description}}</p>
       <p class="col-12 col-md-6 col-lg-5"><img src="{% static 'content/images/propic.png' %}" id="propic"> {{post.user}} <br><i style="color:gray; font-size: 12px;">{{ post.time_since_upload }}</i></p>
       <div class="col-0 col-md-2 col-lg-4"></div>
       <p id = "comments" class="col-3 col-md-2 col-lg-2"> {{post.comment_count}} <i class="fa fa-comment-o"></i></p>
