@@ -11,6 +11,7 @@ from .models import AppUser
 from .models import Category
 from .models import UserPost
 from .models import Comment
+from .models import UserSavedPosts
 
 
 admin.site.register(Interest)
@@ -20,3 +21,4 @@ admin.site.register(AppUser)
 admin.site.register(Category)
 admin.site.register(UserPost)
 admin.site.register(Comment)
+admin.site.register(UserSavedPosts)

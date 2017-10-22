@@ -26,7 +26,7 @@ from django.utils.timesince import timesince
 
 # from django.contrib import auth
 
-from models import AppUser, UserPost, Category
+from models import AppUser, UserPost, Category, UserSavedPosts
 
 class ProfileView(View):
     def get(self, request):
@@ -173,6 +173,7 @@ class FeedView(View):
         context = {'posts': feed_posts, 'user': request.user.get_full_name, 'tab': 0}
         return render(request, template, context)
 
+
 class SavedPostsView(View):
     def get(self, request):
         # gets all the posts
@@ -185,18 +186,18 @@ class SavedPostsView(View):
         #     for category in current_categories:
         #         user_categories[category.id] = True
 
-        user_posts = UserPost.objects.all().order_by('added_on').reverse()
+        user_saved_posts = UserSavedPosts.objects.all().filter(user=request.user).order_by('added_on').reverse()
         feed_posts = []
-        for current_post in user_posts:
-            post = {'user': current_post.user.get_full_name(), 'title': current_post.title,
-                    'reactions': current_post.aggregate_reactions, 'idea_or_venture': current_post.idea_or_venture,
-                    'comment_count': Comment.objects.filter(post=current_post).count(), 'venture_count': '',
-                    'description': current_post.description}
-            if current_post.liked - current_post.disliked < 0:
+        for saved_post in user_saved_posts:
+            post = {'user': saved_post.user.get_full_name(), 'title': saved_post.post.title,
+                    'reactions': saved_post.post.aggregate_reactions, 'idea_or_venture': saved_post.post.idea_or_venture,
+                    'comment_count': Comment.objects.filter(post=saved_post.post).count(), 'venture_count': '',
+                    'description': saved_post.post.description}
+            if saved_post.post.liked - saved_post.post.disliked < 0:
                 post['attitude'] = 0
             else:
                 post['attitude'] = 1
-            time_passed = datetime.utcnow().replace(tzinfo=pytz.UTC) - current_post.added_on
+            time_passed = datetime.utcnow().replace(tzinfo=pytz.UTC) - saved_post.post.added_on
             days = time_passed.days
             hours = time_passed.seconds // 3600
             minutest_passed = (time_passed.seconds // 60) % 60

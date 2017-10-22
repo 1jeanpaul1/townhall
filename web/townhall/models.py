@@ -11,6 +11,8 @@ from django.contrib.auth.models import (
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+import datetime
+from django.utils import timezone
 
 
 # The user will have interests
@@ -276,6 +278,21 @@ class Comment(models.Model):
     content = models.TextField()
     added_on = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Comment'
 
 
+class UserSavedPosts(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_saved_posts', on_delete=models.CASCADE)
+    post = models.ForeignKey(UserPost, related_name='post_saved', on_delete=models.CASCADE)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'User Saved Post'
 
