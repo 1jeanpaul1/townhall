@@ -196,7 +196,7 @@ class Category(models.Model):
 
 
 class UserPost(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_post', on_delete=models.CASCADE,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_post', on_delete=models.CASCADE,default=0)
     title = models.CharField(max_length=255)
     #Need to figure out the image logic
     # post_image1 = models.ImageField(upload_to='posts/images', blank=True)
@@ -219,12 +219,12 @@ class UserPost(models.Model):
         auto_now_add=True)
     liked = models.IntegerField(default=0)
     disliked = models.IntegerField(default=0)
-    is_idea = models.BooleanField()
+    is_idea = models.BooleanField(default=True)
     # could go in either Category or Product class
-    categories = models.ManyToManyField(
-        Category,
-        related_name='post_category',
-        blank=True)
+    # categories = models.ManyToManyField(
+    #     Category, blank=True,
+    #     related_name='post_category'
+    #     )
 
     @property
     def aggregate_reactions(self):

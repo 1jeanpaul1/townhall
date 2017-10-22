@@ -26,7 +26,8 @@ class UserRegistration(forms.ModelForm):
 
     # print()
 
+
 class UserFormPost(forms.ModelForm):
     class Meta:
         model = UserPost
-        fields = ['user', 'title', 'summary', 'description', 'is_idea', 'categories']
+        fields = ['title', 'summary', 'description']

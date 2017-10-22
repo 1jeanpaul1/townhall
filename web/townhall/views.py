@@ -67,7 +67,7 @@ class ProfileView(View):
 
     def get(self, request):
         cururl = request.path
-        currentprofile = AppUser.objects.get(email=HttpRequest.path[17:])
+        currentprofile = AppUser.objects.get(email=str(HttpRequest.path[17:]))
         if (currentprofile.is_entrepreneur):
             template = 'entrepreneurprofile.html'
             context = {}
@@ -198,7 +198,7 @@ class UserRegistrationView(View):
 
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('../home')
+                return HttpResponseRedirect('../newpost')
 
         return render(request, self.template_name, {'form': form})
 
@@ -219,35 +219,50 @@ class UserFormPostView(View):
         form = self.form_class(None)
         context = {}
         context['categories'] = Category.objects.all()
-
+        context['user'] = request.user
         return render(request, self.template_name, {'form': form})
 
         # process user registration
 
     def post(self, request):
-        print(request.POST)
-        form = self.form_class(request.POST)
-        # print(form.is_valid())
-        # print(form.data)
-        if form.is_valid():
-            user = request.user
-            post = form.save(commit=False)
-            id = post.object.id
-
+        # print(request.POST)
+        # form = self.form_class(request.POST)
+        #print(form.is_valid())
+        #print(form.data)
+        # if form.is_valid():
+        curuser = request.user
+        curuser.is_active = True
+        # print(curuser)
+            # post = form.save(commit=False)
+        data = request.POST
+        title = data.get('title', '')
+        summary = data.get('summary', '')
+        description = data.get('description', '')
+        is_idea = 'is_idea' in data
+        # categories = data.get('categories', '')
+        # print(data)
+        # print(is_idea)
+        print(request.user.id)
+        curuser.save()
+        curuser.fullclean
+        post = UserPost.objects.create(user_id=request.user.id, title=title, summary=summary, description=description,
+                                is_idea=is_idea)
+        post.save()
+        # post.categories.add(categories)
             # cleanred (normalized data)
-            title = form.cleaned_data['title']
-            summary = form.cleaned_data['summary']
-            description = form.cleaned_data['description']
-            is_idea = form.cleaned_data['is_idea']
-            categories = form.cleaned_data['categories']
+            # user = curuser
+            # title = form.cleaned_data['title']
+            # summary = form.cleaned_data['summary']
+            # description = form.cleaned_data['description']
+            # # is_idea = form.cleaned_data['is_idea']
+            # # categories = form.cleaned_data['categories']
+            # # print(form.data)
+            # post.save()
 
-            post.save()
+            # if user.is_active:
+            #     login(request, user)
+            #     return HttpResponseRedirect('../home')
 
-
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('../home')
-
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, )#{'form': form})
 
 
