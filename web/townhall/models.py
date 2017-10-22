@@ -11,6 +11,8 @@ from django.contrib.auth.models import (
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+import datetime
+from django.utils import timezone
 
 
 # The user will have interests
@@ -21,6 +23,14 @@ class Interest(models.Model):
     is_visible = models.BooleanField(default=False)
 
     ALREADY_EXISTS = 'The Interest already exists'
+
+
+    def __unicode__(self):
+        return self.name
+
+
+    class Meta:
+        verbose_name_plural = 'interests'
 
 # *************USER AND PERMISSION MODELS*********************
 class Permission(models.Model):
@@ -221,10 +231,10 @@ class UserPost(models.Model):
     disliked = models.IntegerField(default=0)
     is_idea = models.BooleanField(default=True)
     # could go in either Category or Product class
-    # categories = models.ManyToManyField(
-    #     Category, blank=True,
-    #     related_name='post_category'
-    #     )
+    categories = models.ManyToManyField(
+        Category, blank=True,
+        related_name='post_category'
+        )
 
     @property
     def aggregate_reactions(self):
@@ -236,7 +246,8 @@ class UserPost(models.Model):
         elif aggregate_count > 0:
             result += '+' + aggregate_string
         else:
-            result += '-' + aggregate_string
+            result += aggregate_string
+        return result
 
     @property
     def idea_or_venture(self):
@@ -244,6 +255,9 @@ class UserPost(models.Model):
             return 'Idea'
         else:
             return 'Venture'
+
+    def __unicode__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'User Post'
@@ -264,6 +278,21 @@ class Comment(models.Model):
     content = models.TextField()
     added_on = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Comment'
 
 
+class UserSavedPosts(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_saved_posts', on_delete=models.CASCADE)
+    post = models.ForeignKey(UserPost, related_name='post_saved', on_delete=models.CASCADE)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'User Saved Post'
 
